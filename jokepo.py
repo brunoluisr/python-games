@@ -65,33 +65,53 @@ canvas.create_image(0, 400, anchor=NW, image=img_s)
 canvas.create_image(500, 400, anchor=NW, image=img_s)
 
 #game function
-while True:
-    user_choice = input("Choose between: rock, paper, or scissors\n")
-    possible_choices = ["rock", "paper", "scissors"]
-    computer_choice = random.choice(possible_choices)
+def game(player):
+    select = [1, 2, 3]
+    computer = random.choice(select)
 
-    print(f"\nYou chose {user_choice}, computer chose {computer_choice}.\n")
+    if player == 1:
+        canvas.create_image(0, 100, anchor=NW, image=rock_p)
+    elif player == 2:
 
-    if user_choice == computer_choice:
-        print(f"Both players selected {user_choice}. It's a TIE")
-    elif user_choice == "rock":
-        if computer_choice == "scissors":
-            print("Rock smashes scissors! You win! :)")
-        else:
-            print("Paper cover rock! You lose. :(")
-    elif user_choice == "paper":
-        if computer_choice == "rock":
-            print("Paper cover rock! You win. :)")
-        else:
-            print("Scissors cut paper! You lose :(")
-    elif user_choice == "scissors":
-        if computer_choice == "paper":
-            print("Scissors cut paper. You win!")
-        else:
-            print("Rock smashes scissors! You lose!")
+        canvas.create_image(0, 100, anchor=NW, image=paper_p)
+    else:
+        canvas.create_image(0, 100, anchor=NW, image=scissor_p)
 
-    play_again = input("Play again? (y/n): ")
-    if play_again.lower() != "y":
-        break
-                    
+    if computer == 1:
+        canvas.create_image(500, 100, anchor=NW, image=rock_c)
+    elif computer == 2:
 
+        canvas.create_image(0, 100, anchor=NW, image=paper_c)
+    else:
+        canvas.create_image(0, 100, anchor=NW, image=scissor_c)
+
+    if player == computer: 
+        res = "TIE"
+
+    elif (player == 1 and computer == 3) or (player == 2 and computer == 1) or (player == 3 and computer == 2):
+        res = "You WON :)"
+
+    else:
+        res = "Computer WON"
+
+    canvas.create_text(390, 600, text="Result: " + res, 
+                       fill="black", font=("Algerian", 25), tag="result")
+
+def clear():
+    canvas.delete("result")
+    canvas.create_image(0, 100, anchor=NW, image=img_p)
+    canvas.create_image(500, 100, anchor=NW, image=img_c)
+
+rock_b = Button(root, text="Rock", command=lambda: game(1))
+rock_b.place(x=30, y=500)
+
+paper_b = Button(root, text="Paper", command=lambda: game(2))
+paper_b.place(x=130, y=500)
+
+scissor_b = Button(root, text="Scissor", command=lambda: game(3))
+scissor_b.place(x=225, y=500)
+
+clear_b = Button(root, text="Clear", font=("Times", 10, "bold"), 
+                     width=10, command=clear).place(x=370, y=28)
+
+root.mainloop()
